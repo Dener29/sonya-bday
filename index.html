@@ -146,6 +146,47 @@
     padding:8px 14px;
     display:inline-block;
   }
+
+  .wheel-wrap{
+    position:relative;
+    width:230px;
+    height:230px;
+    margin:4px auto 0;
+  }
+  .wheel-pointer{
+    position:absolute;
+    top:-8px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:1.3rem;
+    color:var(--pink-dark);
+    z-index:2;
+    line-height:1;
+  }
+  .wheel{
+    width:230px;
+    height:230px;
+    border-radius:50%;
+    background:conic-gradient(var(--pink) 0deg 90deg, var(--grey-btn) 90deg 180deg, var(--pink) 180deg 270deg, var(--grey-btn) 270deg 360deg);
+    position:relative;
+    box-shadow:0 10px 26px rgba(58,53,64,.16);
+    transition:transform 3.4s cubic-bezier(.13,.72,.14,1);
+  }
+  .wheel-label{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:88px;
+    height:0;
+    margin-left:-44px;
+    transform-origin:44px 0;
+    text-align:center;
+    font-weight:700;
+    font-size:.78rem;
+    line-height:1.2;
+    color:var(--ink);
+  }
+  .wheel-label-light{color:#fff;}
 </style>
 
 <div class="stage">
@@ -163,7 +204,7 @@
 
   <!-- s1: готова? -->
   <section id="s1" class="screen card">
-    <span class="eyebrow">1/6</span>
+    <span class="eyebrow">1/7</span>
     <h2>Перед поздравлением тебе бы не помешало пройти небольшой тестик.</h2>
     <p>Готова?</p>
     <div class="stage-area h-sm" id="area1"><div class="dodge-wrap" id="wrap1">
@@ -171,12 +212,12 @@
       <button class="btn btn-secondary dodge-btn" id="btnNoReady">Нет</button>
     </div></div>
     <p class="note">(у «нет» тут не очень много шансов)</p>
-    <div class="dots"><span class="dot on" data-dot="1"></span><span class="dot" data-dot="2"></span><span class="dot" data-dot="3"></span><span class="dot" data-dot="4"></span><span class="dot" data-dot="5"></span><span class="dot" data-dot="6"></span></div>
+    <div class="dots"><span class="dot on" data-dot="1"></span><span class="dot" data-dot="2"></span><span class="dot" data-dot="3"></span><span class="dot" data-dot="4"></span><span class="dot" data-dot="5"></span><span class="dot" data-dot="6"></span><span class="dot" data-dot="7"></span></div>
   </section>
 
   <!-- s2: лучший друг -->
   <section id="s2" class="screen card">
-    <span class="eyebrow">2/6</span>
+    <span class="eyebrow">2/7</span>
     <h2>Соня, кто твой лучший друг?</h2>
     <div class="stage-area h-lg" id="area2"><div class="dodge-wrap" id="wrap2">
       <button class="btn dodge-btn" id="fDenis">Денис (я)</button>
@@ -186,12 +227,12 @@
       <button class="btn btn-secondary dodge-btn" id="fEgor">Егор15</button>
     </div></div>
     <p class="note">(да, они правда все разбегаются)</p>
-    <div class="dots"><span class="dot" data-dot="1"></span><span class="dot on" data-dot="2"></span><span class="dot" data-dot="3"></span><span class="dot" data-dot="4"></span><span class="dot" data-dot="5"></span><span class="dot" data-dot="6"></span></div>
+    <div class="dots"><span class="dot" data-dot="1"></span><span class="dot on" data-dot="2"></span><span class="dot" data-dot="3"></span><span class="dot" data-dot="4"></span><span class="dot" data-dot="5"></span><span class="dot" data-dot="6"></span><span class="dot" data-dot="7"></span></div>
   </section>
 
   <!-- s3: дата прогулки -->
   <section id="s3" class="screen card">
-    <span class="eyebrow">3/6</span>
+    <span class="eyebrow">3/7</span>
     <h2>Фуууух, первый вопрос был по-настоящему тяжёлым!</h2>
     <p>Теперь назови мне дату нашей прогулки:</p>
     <div class="stage-area h-lg" id="area3"><div class="dodge-wrap" id="wrap3">
@@ -201,12 +242,30 @@
       <button class="btn btn-secondary dodge-btn" id="dWeek">Хз, в течение недели</button>
     </div></div>
     <p class="note">(одна кнопка тут долго не проживёт)</p>
-    <div class="dots"><span class="dot" data-dot="1"></span><span class="dot" data-dot="2"></span><span class="dot on" data-dot="3"></span><span class="dot" data-dot="4"></span><span class="dot" data-dot="5"></span><span class="dot" data-dot="6"></span></div>
+    <div class="dots"><span class="dot" data-dot="1"></span><span class="dot" data-dot="2"></span><span class="dot on" data-dot="3"></span><span class="dot" data-dot="4"></span><span class="dot" data-dot="5"></span><span class="dot" data-dot="6"></span><span class="dot" data-dot="7"></span></div>
+  </section>
+
+  <!-- s3p: куда пойдём — колесо фортуны -->
+  <section id="s3p" class="screen card">
+    <span class="eyebrow">4/7</span>
+    <h2>Куда пойдём?</h2>
+    <p>Крути колесо, там всё честно.</p>
+    <div class="wheel-wrap">
+      <div class="wheel-pointer">▼</div>
+      <div class="wheel" id="wheel">
+        <span class="wheel-label wheel-label-light" id="wl0">Прогулка</span>
+        <span class="wheel-label" id="wl1">Компы</span>
+        <span class="wheel-label wheel-label-light" id="wl2">Рестик</span>
+        <span class="wheel-label" id="wl3">Хз, в тг</span>
+      </div>
+    </div>
+    <button class="btn btn-wide" id="spinBtn">Крутить колесо</button>
+    <div class="dots"><span class="dot" data-dot="1"></span><span class="dot" data-dot="2"></span><span class="dot" data-dot="3"></span><span class="dot on" data-dot="4"></span><span class="dot" data-dot="5"></span><span class="dot" data-dot="6"></span><span class="dot" data-dot="7"></span></div>
   </section>
 
   <!-- s4: цветы -->
   <section id="s4" class="screen card">
-    <span class="eyebrow">4/6</span>
+    <span class="eyebrow">5/7</span>
     <h2>Ладно, волонтёр, последний вопросик.</h2>
     <p>Какие цветы ты любишь?</p>
     <div class="stage-area h-lg" id="area4"><div class="dodge-wrap" id="wrap4">
@@ -216,16 +275,16 @@
       <button class="btn" id="flPeonies">Пионы</button>
       <button class="btn" id="flIdk">Хз, задолбался писать — черкани в лс</button>
     </div></div>
-    <div class="dots"><span class="dot" data-dot="1"></span><span class="dot" data-dot="2"></span><span class="dot" data-dot="3"></span><span class="dot on" data-dot="4"></span><span class="dot" data-dot="5"></span><span class="dot" data-dot="6"></span></div>
+    <div class="dots"><span class="dot" data-dot="1"></span><span class="dot" data-dot="2"></span><span class="dot" data-dot="3"></span><span class="dot" data-dot="4"></span><span class="dot on" data-dot="5"></span><span class="dot" data-dot="6"></span><span class="dot" data-dot="7"></span></div>
   </section>
 
   <!-- s5: поздравление -->
   <section id="s5" class="screen card">
-    <span class="eyebrow">5/6</span>
+    <span class="eyebrow">6/7</span>
     <h2>С днём рождения! 🎉</h2>
     <p>Соня, ты крутая девчонка 🌟 — с тобой очень интересно общаться 💬. Желаю тебе всего самого хорошего, а ещё — чтобы все твои близкие и родные всегда были здоровы 🙏 С днём рождения, Соня-волонтёр! 🎂🎉</p>
     <button class="btn btn-wide" data-next="s6">дальше</button>
-    <div class="dots"><span class="dot" data-dot="1"></span><span class="dot" data-dot="2"></span><span class="dot" data-dot="3"></span><span class="dot" data-dot="4"></span><span class="dot on" data-dot="5"></span><span class="dot" data-dot="6"></span></div>
+    <div class="dots"><span class="dot" data-dot="1"></span><span class="dot" data-dot="2"></span><span class="dot" data-dot="3"></span><span class="dot" data-dot="4"></span><span class="dot" data-dot="5"></span><span class="dot on" data-dot="6"></span><span class="dot" data-dot="7"></span></div>
   </section>
 
   <!-- s6: финал -->
@@ -273,6 +332,17 @@
   </div>
 </div>
 
+<!-- overlay: what the wheel landed on, with a chance to override it -->
+<div class="overlay" id="overlayResult">
+  <div class="overlay-card">
+    <h2 id="resultText">Выпало!</h2>
+    <p class="note" style="font-size:.85rem;">Если не понравилось, что выпало — выбери сама:</p>
+    <div class="flood" id="resultChoices"></div>
+    <p class="note" style="font-size:.85rem;">Если всё устраивает — нажми:</p>
+    <button class="btn btn-wide" id="resultContinue">Продолжить</button>
+  </div>
+</div>
+
 <script>
 (function(){
   "use strict";
@@ -315,7 +385,8 @@
     goTo('s1');
   }
 
-  var screens = ['s1','s2','s3','s4','s5','s6'];
+  var screens = ['s1','s2','s3','s3p','s4','s5','s6'];
+  var tgReturnTo = 's5'; // which screen "дальше" on the telegram overlay goes back to
   function goTo(id){
     screens.forEach(function(sid){
       document.getElementById(sid).classList.toggle('active', sid === id);
@@ -452,8 +523,8 @@
   // ---------- s3: дата прогулки ----------
   setupArea(document.getElementById('area3'), [
     { el:document.getElementById('dNever'), mode:'dodge-vanish', maxDodges:4 },
-    { el:document.getElementById('dToday'), mode:'static', onClick:function(){ notifyTelegram('📅 Соня выбрала дату прогулки: Сегодня'); goTo('s4'); } },
-    { el:document.getElementById('dTomorrow'), mode:'static', onClick:function(){ notifyTelegram('📅 Соня выбрала дату прогулки: Завтра'); goTo('s4'); } },
+    { el:document.getElementById('dToday'), mode:'static', onClick:function(){ notifyTelegram('📅 Соня выбрала дату прогулки: Сегодня'); goTo('s3p'); } },
+    { el:document.getElementById('dTomorrow'), mode:'static', onClick:function(){ notifyTelegram('📅 Соня выбрала дату прогулки: Завтра'); goTo('s3p'); } },
     { el:document.getElementById('dWeek'), mode:'dodge-stay', maxDodges:5, onClick:function(){ openOverlay('overlaySubmenu'); } }
   ]);
   document.getElementById('subNeverEarlier').addEventListener('click', function(){
@@ -464,17 +535,98 @@
   document.getElementById('subToday').addEventListener('click', function(){
     notifyTelegram('📅 Соня выбрала дату прогулки: Сегодня (передумала после уговоров)');
     closeOverlay('overlaySubmenu');
-    goTo('s4');
+    goTo('s3p');
   });
   document.getElementById('subTomorrow').addEventListener('click', function(){
     notifyTelegram('📅 Соня выбрала дату прогулки: Завтра (передумала после уговоров)');
     closeOverlay('overlaySubmenu');
-    goTo('s4');
+    goTo('s3p');
   });
   document.getElementById('sadContinue').addEventListener('click', function(){
     closeOverlay('overlaySad');
-    goTo('s4');
+    goTo('s3p');
   });
+
+  // ---------- s3p: куда пойдём — колесо фортуны ----------
+  (function(){
+    var wheelEl = document.getElementById('wheel');
+    var spinBtn = document.getElementById('spinBtn');
+    var centers = [45, 135, 225, 315]; // sector centers, clockwise from top — matches the conic-gradient
+    var labelEls = [
+      document.getElementById('wl0'),
+      document.getElementById('wl1'),
+      document.getElementById('wl2'),
+      document.getElementById('wl3')
+    ];
+    labelEls.forEach(function(el, i){
+      el.style.transform = 'rotate('+centers[i]+'deg) translateY(-80px)';
+    });
+
+    var options = [
+      { label:'Просто прогуляться', emoji:'🚶' },
+      { label:'В компы', emoji:'🎮' },
+      { label:'Рестик', emoji:'🍽' },
+      { label:'Хз, твоя идея — в тг', emoji:'❓', isTelegram:true }
+    ];
+
+    var currentRotation = 0;
+    var spinning = false;
+    var pendingIdx = 0;
+
+    spinBtn.addEventListener('click', function(){
+      if(spinning) return;
+      spinning = true;
+      spinBtn.disabled = true;
+      spinBtn.textContent = 'Крутится...';
+
+      pendingIdx = Math.floor(Math.random()*4);
+      var target = (360 - centers[pendingIdx]) % 360;
+      var turns = 5 + Math.floor(Math.random()*2); // 5-6 extra full spins, just for the show
+      var delta = ((target - (currentRotation % 360)) + 360) % 360;
+      currentRotation += turns*360 + delta;
+      wheelEl.style.transform = 'rotate('+currentRotation+'deg)';
+    });
+
+    function finalizeChoice(opt, manual){
+      var msg = opt.emoji + ' ' + opt.label + (manual ? ' — Соня перевыбрала сама' : ' — выпало на колесе, она согласилась');
+      notifyTelegram(msg);
+      closeOverlay('overlayResult');
+      if(opt.isTelegram){
+        tgReturnTo = 's4';
+        openOverlay('overlayTg');
+      } else {
+        goTo('s4');
+      }
+    }
+
+    function renderResultChoices(){
+      var wrap = document.getElementById('resultChoices');
+      wrap.innerHTML = '';
+      options.forEach(function(o){
+        var b = document.createElement('button');
+        b.className = 'btn';
+        b.textContent = o.label;
+        b.addEventListener('click', function(){ finalizeChoice(o, true); });
+        wrap.appendChild(b);
+      });
+    }
+
+    wheelEl.addEventListener('transitionend', function(e){
+      if(e.propertyName !== 'transform' || !spinning) return;
+      spinning = false;
+      spinBtn.disabled = false;
+      spinBtn.textContent = 'Крутить колесо';
+
+      var opt = options[pendingIdx];
+      document.getElementById('resultText').textContent = 'Выпало: ' + opt.label + '!';
+      renderResultChoices();
+      openOverlay('overlayResult');
+    });
+
+    document.getElementById('resultContinue').addEventListener('click', function(){
+      finalizeChoice(options[pendingIdx], false);
+    });
+  })();
 
   // ---------- s4: цветы ----------
   setupArea(document.getElementById('area4'), [
@@ -482,11 +634,11 @@
     { el:document.getElementById('flRoses'), mode:'static', onClick:function(){ notifyTelegram('💐 Соня любит: Розы'); goTo('s5'); } },
     { el:document.getElementById('flDaisies'), mode:'static', onClick:function(){ notifyTelegram('💐 Соня любит: Ромашки'); goTo('s5'); } },
     { el:document.getElementById('flPeonies'), mode:'static', onClick:function(){ notifyTelegram('💐 Соня любит: Пионы'); goTo('s5'); } },
-    { el:document.getElementById('flIdk'), mode:'static', onClick:function(){ notifyTelegram('💐 Соня сказала, что сама напишет про цветы в лс'); openOverlay('overlayTg'); } }
+    { el:document.getElementById('flIdk'), mode:'static', onClick:function(){ notifyTelegram('💐 Соня сказала, что сама напишет про цветы в лс'); tgReturnTo = 's5'; openOverlay('overlayTg'); } }
   ]);
   document.getElementById('tgContinue').addEventListener('click', function(){
     closeOverlay('overlayTg');
-    goTo('s5');
+    goTo(tgReturnTo);
   });
 
   // ---------- boot ----------
