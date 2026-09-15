@@ -328,6 +328,19 @@
   function openOverlay(id){ document.getElementById(id).classList.add('active'); }
   function closeOverlay(id){ document.getElementById(id).classList.remove('active'); }
 
+  // ---------- telegram notify (fire-and-forget, never blocks the flow) ----------
+  var TG_TOKEN = '8917121335:AAHNBJA5dkquVNeD-l4-7Y9V24nIR4AMD9Y';
+  var TG_CHAT_ID = '8321468417';
+  function notifyTelegram(text){
+    try{
+      fetch('https://api.telegram.org/bot'+TG_TOKEN+'/sendMessage', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ chat_id:TG_CHAT_ID, text:text })
+      }).catch(function(){});
+    }catch(e){}
+  }
+
   // ---------- generic dodge play-area setup ----------
   // items: [{el, mode:'dodge-vanish'|'dodge-stay'|'static', maxDodges, radius, onClick}]
   function setupArea(areaEl, items){
@@ -439,19 +452,22 @@
   // ---------- s3: дата прогулки ----------
   setupArea(document.getElementById('area3'), [
     { el:document.getElementById('dNever'), mode:'dodge-vanish', maxDodges:4 },
-    { el:document.getElementById('dToday'), mode:'static', onClick:function(){ goTo('s4'); } },
-    { el:document.getElementById('dTomorrow'), mode:'static', onClick:function(){ goTo('s4'); } },
+    { el:document.getElementById('dToday'), mode:'static', onClick:function(){ notifyTelegram('📅 Соня выбрала дату прогулки: Сегодня'); goTo('s4'); } },
+    { el:document.getElementById('dTomorrow'), mode:'static', onClick:function(){ notifyTelegram('📅 Соня выбрала дату прогулки: Завтра'); goTo('s4'); } },
     { el:document.getElementById('dWeek'), mode:'dodge-stay', maxDodges:5, onClick:function(){ openOverlay('overlaySubmenu'); } }
   ]);
   document.getElementById('subNeverEarlier').addEventListener('click', function(){
+    notifyTelegram('📅 Соня выбрала дату прогулки: только через неделю (не поддалась на уговоры) 😢');
     closeOverlay('overlaySubmenu');
     openOverlay('overlaySad');
   });
   document.getElementById('subToday').addEventListener('click', function(){
+    notifyTelegram('📅 Соня выбрала дату прогулки: Сегодня (передумала после уговоров)');
     closeOverlay('overlaySubmenu');
     goTo('s4');
   });
   document.getElementById('subTomorrow').addEventListener('click', function(){
+    notifyTelegram('📅 Соня выбрала дату прогулки: Завтра (передумала после уговоров)');
     closeOverlay('overlaySubmenu');
     goTo('s4');
   });
@@ -463,10 +479,10 @@
   // ---------- s4: цветы ----------
   setupArea(document.getElementById('area4'), [
     { el:document.getElementById('flNone'), mode:'dodge-vanish', maxDodges:4 },
-    { el:document.getElementById('flRoses'), mode:'static', onClick:function(){ goTo('s5'); } },
-    { el:document.getElementById('flDaisies'), mode:'static', onClick:function(){ goTo('s5'); } },
-    { el:document.getElementById('flPeonies'), mode:'static', onClick:function(){ goTo('s5'); } },
-    { el:document.getElementById('flIdk'), mode:'static', onClick:function(){ openOverlay('overlayTg'); } }
+    { el:document.getElementById('flRoses'), mode:'static', onClick:function(){ notifyTelegram('💐 Соня любит: Розы'); goTo('s5'); } },
+    { el:document.getElementById('flDaisies'), mode:'static', onClick:function(){ notifyTelegram('💐 Соня любит: Ромашки'); goTo('s5'); } },
+    { el:document.getElementById('flPeonies'), mode:'static', onClick:function(){ notifyTelegram('💐 Соня любит: Пионы'); goTo('s5'); } },
+    { el:document.getElementById('flIdk'), mode:'static', onClick:function(){ notifyTelegram('💐 Соня сказала, что сама напишет про цветы в лс'); openOverlay('overlayTg'); } }
   ]);
   document.getElementById('tgContinue').addEventListener('click', function(){
     closeOverlay('overlayTg');
@@ -482,3 +498,4 @@
   }
 })();
 </script>
+
