@@ -149,8 +149,8 @@
 
   .wheel-wrap{
     position:relative;
-    width:230px;
-    height:230px;
+    width:250px;
+    height:250px;
     margin:4px auto 0;
   }
   .wheel-pointer{
@@ -164,10 +164,10 @@
     line-height:1;
   }
   .wheel{
-    width:230px;
-    height:230px;
+    width:250px;
+    height:250px;
     border-radius:50%;
-    background:conic-gradient(var(--pink) 0deg 90deg, var(--grey-btn) 90deg 180deg, var(--pink) 180deg 270deg, var(--grey-btn) 270deg 360deg);
+    background:conic-gradient(var(--pink) 0deg 72deg, var(--grey-btn) 72deg 144deg, var(--pink) 144deg 216deg, var(--grey-btn) 216deg 288deg, var(--pink) 288deg 360deg);
     position:relative;
     box-shadow:0 10px 26px rgba(58,53,64,.16);
     transition:transform 3.4s cubic-bezier(.13,.72,.14,1);
@@ -176,13 +176,13 @@
     position:absolute;
     left:50%;
     top:50%;
-    width:88px;
+    width:82px;
     height:0;
-    margin-left:-44px;
-    transform-origin:44px 0;
+    margin-left:-41px;
+    transform-origin:41px 0;
     text-align:center;
     font-weight:700;
-    font-size:.78rem;
+    font-size:.74rem;
     line-height:1.2;
     color:var(--ink);
   }
@@ -254,9 +254,10 @@
       <div class="wheel-pointer">▼</div>
       <div class="wheel" id="wheel">
         <span class="wheel-label wheel-label-light" id="wl0">Прогулка</span>
-        <span class="wheel-label" id="wl1">Компы</span>
-        <span class="wheel-label wheel-label-light" id="wl2">Рестик</span>
-        <span class="wheel-label" id="wl3">Хз, в тг</span>
+        <span class="wheel-label" id="wl1">Каток</span>
+        <span class="wheel-label wheel-label-light" id="wl2">Компы</span>
+        <span class="wheel-label" id="wl3">Рестик</span>
+        <span class="wheel-label wheel-label-light" id="wl4">Хз, в тг</span>
       </div>
     </div>
     <button class="btn btn-wide" id="spinBtn">Крутить колесо</button>
@@ -551,19 +552,21 @@
   (function(){
     var wheelEl = document.getElementById('wheel');
     var spinBtn = document.getElementById('spinBtn');
-    var centers = [45, 135, 225, 315]; // sector centers, clockwise from top — matches the conic-gradient
+    var centers = [36, 108, 180, 252, 324]; // sector centers, clockwise from top — matches the conic-gradient
     var labelEls = [
       document.getElementById('wl0'),
       document.getElementById('wl1'),
       document.getElementById('wl2'),
-      document.getElementById('wl3')
+      document.getElementById('wl3'),
+      document.getElementById('wl4')
     ];
     labelEls.forEach(function(el, i){
-      el.style.transform = 'rotate('+centers[i]+'deg) translateY(-80px)';
+      el.style.transform = 'rotate('+centers[i]+'deg) translateY(-86px)';
     });
 
     var options = [
       { label:'Просто прогуляться', emoji:'🚶' },
+      { label:'Каток', emoji:'⛸️' },
       { label:'В компы', emoji:'🎮' },
       { label:'Рестик', emoji:'🍽' },
       { label:'Хз, твоя идея — в тг', emoji:'❓', isTelegram:true }
@@ -579,7 +582,7 @@
       spinBtn.disabled = true;
       spinBtn.textContent = 'Крутится...';
 
-      pendingIdx = Math.floor(Math.random()*4);
+      pendingIdx = Math.floor(Math.random()*options.length);
       var target = (360 - centers[pendingIdx]) % 360;
       var turns = 5 + Math.floor(Math.random()*2); // 5-6 extra full spins, just for the show
       var delta = ((target - (currentRotation % 360)) + 360) % 360;
@@ -650,4 +653,5 @@
   }
 })();
 </script>
+
 
