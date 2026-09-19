@@ -193,7 +193,7 @@
 
   <section id="lock" class="card">
     <span class="eyebrow" id="secretTap" style="cursor:default;">Соня-волонтёр</span>
-    <p>Через это время — твой день рождения! Не забудь зайти сюда 22 сентября в 10:00 по МСК.</p>
+    <p>Через это время — твой день рождения! Не забудь зайти сюда 21 сентября в 22:00 по МСК.</p>
     <div class="countdown" aria-live="polite">
       <div class="cd-tile"><span class="cd-num" id="cdDays">00</span><span class="cd-label">дней</span></div>
       <div class="cd-tile"><span class="cd-num" id="cdHours">00</span><span class="cd-label">часов</span></div>
@@ -348,7 +348,7 @@
 (function(){
   "use strict";
 
-  var TARGET = new Date('2026-09-22T10:00:00+03:00').getTime();
+  var TARGET = new Date('2026-09-21T22:00:00+03:00').getTime();
   var lock = document.getElementById('lock');
   var params = new URLSearchParams(location.search);
   var preview = params.has('preview') || location.hash.indexOf('preview') !== -1;
@@ -653,5 +653,3 @@
   }
 })();
 </script>
-
-
