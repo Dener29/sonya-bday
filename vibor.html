@@ -82,14 +82,37 @@
     background:var(--card);
     border-radius:18px;
     box-shadow:0 8px 20px rgba(58,53,64,.08);
-    padding:18px 20px;
+    padding:0 0 18px;
     display:flex;
     flex-direction:column;
     gap:8px;
     transition:box-shadow .2s ease, transform .2s ease;
+    overflow:hidden;
   }
   .place.flash{box-shadow:0 0 0 3px var(--pink); transform:scale(1.01);}
-  .place-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .place-photo-wrap{
+    width:100%;
+    aspect-ratio:16/9;
+    background:var(--grey-btn);
+    overflow:hidden;
+    position:relative;
+  }
+  .place-photo-wrap img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .place-photo-fallback{
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:2.2rem;
+  }
+  .place-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px; padding:14px 20px 0;}
+  .place-body-pad{padding:0 20px;}
   .place-name{font-weight:700; font-size:1.08rem;}
   .check-pill{
     flex:none;
@@ -240,19 +263,36 @@
   "use strict";
 
   var places = [
-    { name:'Дубровин', cuisine:'Русская', check:2000, approx:false, addr:'ул. Малышева, 74', vibe:'Ностальгия по-советски в историческом здании гостиницы, джаз в динамиках, винтажные приборы.' },
-    { name:'Честертон', cuisine:'Европейская', check:2300, approx:false, addr:'ул. Радищева, 33', vibe:'Семейный формат, завтраки весь день, два зала с разным настроением — светлый и камерный.' },
-    { name:'Визит', cuisine:'Домашняя', check:1300, approx:false, addr:'ул. 8 Марта, 55', vibe:'Уютно, как дома: камин, велюровые диваны. Самый бюджетный вариант в списке.' },
-    { name:'Хинкали Котэ', cuisine:'Грузинская', check:1500, approx:true, addr:'ул. Мичурина, 230к3', vibe:'Просто и по-настоящему, без пафоса. Рядом парк Маяковского — можно погулять после. Тоже бюджетно.' },
-    { name:'Pumpula', cuisine:'Грузинская', check:1700, approx:true, addr:'ул. Толмачева, 12', vibe:'Современное прочтение грузинской кухни, открытая кухня, интимная атмосфера с приглушённым светом.' },
-    { name:'Высота 5642', cuisine:'Кавказская', check:2200, approx:true, addr:'ул. Воеводина, 8', vibe:'Панорамные окна с видом на город, тихая музыка, свеча на столе — красиво на закате.' },
-    { name:'The Barbara', cuisine:'Морепродукты', check:2250, approx:true, addr:'ул. Бориса Ельцина, 6', vibe:'Релакс-вайб, песочные тона, имитация волн, панорама на набережную.' },
-    { name:'Momo', cuisine:'Азиатская', check:2500, approx:true, addr:'ул. Карла Либкнехта, 38А', vibe:'Небольшой камерный ресторанчик, можно спокойно разговаривать, есть сомелье.' },
-    { name:'Gavi', cuisine:'Итальянская', check:2800, approx:true, addr:'ул. Горького, 26', vibe:'Элегантно, летняя веранда с видом на набережную Исети, столик у камина или окна.' },
-    { name:'Гастроли', cuisine:'Европейская', check:2900, approx:true, addr:'ул. 8 Марта, 4', vibe:'Дважды признавался лучшим ресторатором Екатеринбурга по версии WhereToEat. Летняя веранда.' },
-    { name:'Custo', cuisine:'Морепродукты', check:3000, approx:true, addr:'ул. Карла Либкнехта, 32', vibe:'Лофт-пространство в центре, мягкий свет, официанты в стильных красных бини.' },
-    { name:'Куршевель 1850', cuisine:'Французская', check:3270, approx:true, addr:'пр. Ленина, 5А', vibe:'Нежный интерьер, стилизованные отдельные кабинеты — на случай особого повода.' }
+    { name:'Дубровин', cuisine:'Русская', check:2000, approx:false, addr:'ул. Малышева, 74', vibe:'Ностальгия по-советски в историческом здании гостиницы, джаз в динамиках, винтажные приборы.', photo:'https://scdn.tomesto.ru/img/place/000/026/053/restoran-dubrovin-na-malysheva_0c8d8_full-220193.jpg' },
+    { name:'Честертон', cuisine:'Европейская', check:2300, approx:false, addr:'ул. Радищева, 33', vibe:'Семейный формат, завтраки весь день, два зала с разным настроением — светлый и камерный.', photo:'https://scdn.tomesto.ru/img/place/000/030/362/restoran-chesterton-byvsh-kardamon-na-radischeva_32a3f_full-349608.jpg' },
+    { name:'Визит', cuisine:'Домашняя', check:1300, approx:false, addr:'ул. 8 Марта, 55', vibe:'Уютно, как дома: камин, велюровые диваны. Самый бюджетный вариант в списке.', photo:'https://scdn.tomesto.ru/img/place/000/028/778/restoran-vizit-byvsh-vosem-55-na-ulitse-8-marta_c8fd5_full-415982.jpg' },
+    { name:'Хинкали Котэ', cuisine:'Грузинская', check:1500, approx:true, addr:'ул. Мичурина, 230к3', vibe:'Просто и по-настоящему, без пафоса. Рядом парк Маяковского — можно погулять после. Тоже бюджетно.', photo:null },
+    { name:'Pumpula', cuisine:'Грузинская', check:1700, approx:true, addr:'ул. Толмачева, 12', vibe:'Современное прочтение грузинской кухни, открытая кухня, интимная атмосфера с приглушённым светом.', photo:null },
+    { name:'Высота 5642', cuisine:'Кавказская', check:2200, approx:true, addr:'ул. Воеводина, 8', vibe:'Панорамные окна с видом на город, тихая музыка, свеча на столе — красиво на закате.', photo:'https://scdn.tomesto.ru/img/place/000/032/426/restoran-vysota-5642-na-ulitse-voevodina_8885f_full-592088.jpg' },
+    { name:'The Barbara', cuisine:'Морепродукты', check:2250, approx:true, addr:'ул. Бориса Ельцина, 6', vibe:'Релакс-вайб, песочные тона, имитация волн, панорама на набережную.', photo:'https://scdn.tomesto.ru/img/place/000/029/674/restoran-barbara-barbara-na-ulitse-borisa-eltsina_8d2d8_full-406697.jpg' },
+    { name:'Momo', cuisine:'Азиатская', check:2500, approx:true, addr:'ул. Карла Либкнехта, 38А', vibe:'Небольшой камерный ресторанчик, можно спокойно разговаривать, есть сомелье.', photo:'https://scdn.tomesto.ru/img/place/000/022/956/gastropab-momo-momo-na-ulitse-karla-libknehta_b4747_full-242706.jpg' },
+    { name:'Gavi', cuisine:'Итальянская', check:2800, approx:true, addr:'ул. Горького, 26', vibe:'Элегантно, летняя веранда с видом на набережную Исети, столик у камина или окна.', photo:null },
+    { name:'Гастроли', cuisine:'Европейская', check:2900, approx:true, addr:'ул. 8 Марта, 4', vibe:'Дважды признавался лучшим ресторатором Екатеринбурга по версии WhereToEat. Летняя веранда.', photo:null },
+    { name:'Custo', cuisine:'Морепродукты', check:3000, approx:true, addr:'ул. Карла Либкнехта, 32', vibe:'Лофт-пространство в центре, мягкий свет, официанты в стильных красных бини.', photo:null },
+    { name:'Куршевель 1850', cuisine:'Французская', check:3270, approx:true, addr:'пр. Ленина, 5А', vibe:'Нежный интерьер, стилизованные отдельные кабинеты — на случай особого повода.', photo:null }
   ];
+
+  var cuisineEmoji = {
+    'Русская':'🥟', 'Европейская':'🥐', 'Домашняя':'🍲', 'Грузинская':'🍢',
+    'Кавказская':'🍢', 'Морепродукты':'🦞', 'Азиатская':'🍜', 'Итальянская':'🍝',
+    'Французская':'🥖'
+  };
+  var cuisineGrad = {
+    'Русская':'linear-gradient(135deg,#F3E8E9,#FF93A8)',
+    'Европейская':'linear-gradient(135deg,#FCEFEF,#F76D8B)',
+    'Домашняя':'linear-gradient(135deg,#F3E8E9,#F0B7C4)',
+    'Грузинская':'linear-gradient(135deg,#FFE3CC,#FF93A8)',
+    'Кавказская':'linear-gradient(135deg,#FFE3CC,#F76D8B)',
+    'Морепродукты':'linear-gradient(135deg,#DCF3EF,#3FB8A6)',
+    'Азиатская':'linear-gradient(135deg,#F3E8E9,#C99BFF)',
+    'Итальянская':'linear-gradient(135deg,#FFE9C6,#FF93A8)',
+    'Французская':'linear-gradient(135deg,#F3E8E9,#E7B8D1)'
+  };
 
   var listEl = document.getElementById('list');
   var filtersEl = document.getElementById('filters');
@@ -271,16 +311,24 @@
       var el = document.createElement('div');
       el.className = 'place';
       el.dataset.name = p.name;
+      var emoji = cuisineEmoji[p.cuisine] || '🍽';
+      var grad = cuisineGrad[p.cuisine] || 'linear-gradient(135deg,#F3E8E9,#FF93A8)';
+      var photoHtml = p.photo
+        ? '<img src="' + p.photo + '" alt="' + p.name.replace(/"/g,'&quot;') + '" loading="lazy" onerror="this.parentElement.innerHTML=\'<div class=&quot;place-photo-fallback&quot; style=&quot;background:' + grad + '&quot;>' + emoji + '</div>\'">'
+        : '<div class="place-photo-fallback" style="background:' + grad + '">' + emoji + '</div>';
       el.innerHTML =
+        '<div class="place-photo-wrap">' + photoHtml + '</div>' +
         '<div class="place-top">' +
           '<div class="place-name">' + p.name + '</div>' +
         '</div>' +
-        '<div class="tags"><span class="tag">' + p.cuisine + '</span></div>' +
-        '<p>' + p.vibe + '</p>' +
-        '<div class="addr">📍 ' + p.addr + '</div>' +
-        '<div class="place-links">' +
-          '<a href="' + mapsUrl(p.name) + '" target="_blank" rel="noopener">Открыть в Яндекс.Картах →</a>' +
-          '<button class="select-btn" data-select="' + p.name.replace(/"/g,'&quot;') + '">Выбрать это место</button>' +
+        '<div class="place-body-pad">' +
+          '<div class="tags"><span class="tag">' + p.cuisine + '</span></div>' +
+          '<p>' + p.vibe + '</p>' +
+          '<div class="addr">📍 ' + p.addr + '</div>' +
+          '<div class="place-links">' +
+            '<a href="' + mapsUrl(p.name) + '" target="_blank" rel="noopener">Открыть в Яндекс.Картах →</a>' +
+            '<button class="select-btn" data-select="' + p.name.replace(/"/g,'&quot;') + '">Выбрать это место</button>' +
+          '</div>' +
         '</div>';
       listEl.appendChild(el);
     });
