@@ -1,0 +1,407 @@
+<title>Рестик, Екб</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#FCEFEF;
+    --card:#FFFFFF;
+    --ink:#3A3540;
+    --ink-soft:#7A727E;
+    --pink:#FF93A8;
+    --pink-dark:#F76D8B;
+    --grey-btn:#F3E8E9;
+    --mint:#3FB8A6;
+    --mint-soft:#DCF3EF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Quicksand',system-ui,sans-serif;
+    min-height:100dvh;
+    padding:28px 16px 48px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+  .wrap{max-width:560px; margin:0 auto; display:flex; flex-direction:column; gap:16px;}
+
+  h1{margin:0; font-size:1.5rem; font-weight:700; line-height:1.2; text-wrap:balance;}
+  .sub{margin:0; color:var(--ink-soft); line-height:1.5; font-size:.95rem;}
+
+  .budget-card{
+    background:var(--card);
+    border-radius:18px;
+    box-shadow:0 10px 26px rgba(58,53,64,.1);
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .budget-card .num{font-weight:700; font-size:1.15rem;}
+  .budget-card .lab{font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft);}
+
+  .btn{
+    font-family:'Quicksand',sans-serif;
+    font-weight:700;
+    font-size:.92rem;
+    border:none;
+    border-radius:12px;
+    background:var(--pink);
+    color:#fff;
+    padding:12px 18px;
+    cursor:pointer;
+    transition:background-color .15s ease, transform .1s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn:hover{background:var(--pink-dark);}
+  .btn:active{transform:scale(.97);}
+  .btn-wide{width:100%;}
+
+  .filters{display:flex; gap:8px; flex-wrap:wrap;}
+  .chip{
+    font-family:'Quicksand',sans-serif;
+    font-weight:700;
+    font-size:.82rem;
+    border:none;
+    border-radius:999px;
+    background:var(--grey-btn);
+    color:var(--ink);
+    padding:8px 14px;
+    cursor:pointer;
+    transition:background-color .15s ease, color .15s ease;
+  }
+  .chip.on{background:var(--pink); color:#fff;}
+
+  .list{display:flex; flex-direction:column; gap:12px;}
+  .place{
+    background:var(--card);
+    border-radius:18px;
+    box-shadow:0 8px 20px rgba(58,53,64,.08);
+    padding:18px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    transition:box-shadow .2s ease, transform .2s ease;
+  }
+  .place.flash{box-shadow:0 0 0 3px var(--pink); transform:scale(1.01);}
+  .place-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .place-name{font-weight:700; font-size:1.08rem;}
+  .check-pill{
+    flex:none;
+    background:var(--mint-soft);
+    color:#1f7c6d;
+    font-weight:700;
+    font-size:.85rem;
+    border-radius:10px;
+    padding:5px 10px;
+    white-space:nowrap;
+  }
+  .tags{display:flex; gap:6px; flex-wrap:wrap;}
+  .tag{
+    font-size:.72rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--pink-dark);
+    background:var(--grey-btn);
+    border-radius:8px;
+    padding:3px 8px;
+  }
+  .place p{margin:0; color:var(--ink-soft); font-size:.9rem; line-height:1.5;}
+  .addr{font-size:.85rem; color:var(--ink-soft);}
+  .place-links{display:flex; align-items:center; gap:14px; margin-top:4px; flex-wrap:wrap;}
+  .place-links a{
+    font-size:.82rem;
+    font-weight:700;
+    color:var(--pink-dark);
+    text-decoration:none;
+  }
+  .place-links a:hover{text-decoration:underline;}
+  .select-btn{
+    font-family:'Quicksand',sans-serif;
+    font-weight:700;
+    font-size:.85rem;
+    border:none;
+    border-radius:10px;
+    background:var(--pink);
+    color:#fff;
+    padding:9px 16px;
+    cursor:pointer;
+  }
+  .select-btn:hover{background:var(--pink-dark);}
+
+  .foot-note{
+    font-size:.78rem;
+    color:var(--ink-soft);
+    line-height:1.5;
+    background:var(--card);
+    border-radius:14px;
+    padding:14px 16px;
+  }
+
+  .overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(58,53,64,.5);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:5;
+  }
+  .overlay.active{display:flex;}
+  .overlay-card{
+    background:var(--card);
+    border-radius:18px;
+    padding:24px 22px;
+    max-width:380px;
+    width:100%;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    max-height:86dvh;
+    overflow-y:auto;
+  }
+  .overlay-card h2{margin:0; font-size:1.25rem; font-weight:700;}
+  .field{text-align:left; display:flex; flex-direction:column; gap:6px;}
+  .field label{font-size:.8rem; font-weight:700; color:var(--ink-soft);}
+  .field input{
+    font-family:'Quicksand',sans-serif;
+    font-size:.95rem;
+    padding:11px 12px;
+    border-radius:10px;
+    border:2px solid var(--grey-btn);
+    background:#fff;
+    color:var(--ink);
+  }
+  .field input:focus{outline:none; border-color:var(--pink);}
+  .warn{font-size:.82rem; color:var(--pink-dark); display:none;}
+  .warn.show{display:block;}
+</style>
+
+<div class="wrap">
+
+  <div>
+    <h1>Куда пойти в Екатеринбурге 🍽️</h1>
+    <p class="sub">Подборка приятных мест. Выбери то, что понравится, и сразу запишись — дальше я всё возьму на себя.</p>
+  </div>
+
+  <div class="budget-card">
+    <div><span class="num" id="countLabel">12</span> <span class="lab">мест в списке</span></div>
+    <button class="btn" id="randomBtn">🎲 Выбрать случайно</button>
+  </div>
+
+  <div class="filters" id="filters"></div>
+
+  <div class="list" id="list"></div>
+
+  <div class="foot-note">
+    Адреса и описания собраны из открытых обзоров (по состоянию на сентябрь 2026) — перед походом стоит свериться с актуальным меню, а для популярных мест лучше подстраховаться и забронировать столик заранее.
+  </div>
+
+</div>
+
+<!-- overlay: pick date & time -->
+<div class="overlay" id="bookingOverlay">
+  <div class="overlay-card">
+    <h2>Записываемся! 🎉</h2>
+    <p id="bookingPlaceLine">Место: <strong id="bookingPlaceName"></strong></p>
+    <div class="field">
+      <label for="bookingDate">Дата</label>
+      <input type="date" id="bookingDate">
+    </div>
+    <div class="field">
+      <label for="bookingTime">Время</label>
+      <input type="time" id="bookingTime">
+    </div>
+    <p class="warn" id="bookingWarn">Заполни дату и время 🙂</p>
+    <button class="btn btn-wide" id="bookingConfirm">Записаться</button>
+    <button class="btn btn-wide" id="bookingCancel" style="background:var(--grey-btn); color:var(--ink);">Назад</button>
+  </div>
+</div>
+
+<!-- overlay: booking done -->
+<div class="overlay" id="bookingDoneOverlay">
+  <div class="overlay-card">
+    <h2>Готово! 💛</h2>
+    <p id="bookingDoneText">Записал!</p>
+    <button class="btn btn-wide" id="bookingDoneClose">Закрыть</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var places = [
+    { name:'Дубровин', cuisine:'Русская', check:2000, approx:false, addr:'ул. Малышева, 74', vibe:'Ностальгия по-советски в историческом здании гостиницы, джаз в динамиках, винтажные приборы.' },
+    { name:'Честертон', cuisine:'Европейская', check:2300, approx:false, addr:'ул. Радищева, 33', vibe:'Семейный формат, завтраки весь день, два зала с разным настроением — светлый и камерный.' },
+    { name:'Визит', cuisine:'Домашняя', check:1300, approx:false, addr:'ул. 8 Марта, 55', vibe:'Уютно, как дома: камин, велюровые диваны. Самый бюджетный вариант в списке.' },
+    { name:'Хинкали Котэ', cuisine:'Грузинская', check:1500, approx:true, addr:'ул. Мичурина, 230к3', vibe:'Просто и по-настоящему, без пафоса. Рядом парк Маяковского — можно погулять после. Тоже бюджетно.' },
+    { name:'Pumpula', cuisine:'Грузинская', check:1700, approx:true, addr:'ул. Толмачева, 12', vibe:'Современное прочтение грузинской кухни, открытая кухня, интимная атмосфера с приглушённым светом.' },
+    { name:'Высота 5642', cuisine:'Кавказская', check:2200, approx:true, addr:'ул. Воеводина, 8', vibe:'Панорамные окна с видом на город, тихая музыка, свеча на столе — красиво на закате.' },
+    { name:'The Barbara', cuisine:'Морепродукты', check:2250, approx:true, addr:'ул. Бориса Ельцина, 6', vibe:'Релакс-вайб, песочные тона, имитация волн, панорама на набережную.' },
+    { name:'Momo', cuisine:'Азиатская', check:2500, approx:true, addr:'ул. Карла Либкнехта, 38А', vibe:'Небольшой камерный ресторанчик, можно спокойно разговаривать, есть сомелье.' },
+    { name:'Gavi', cuisine:'Итальянская', check:2800, approx:true, addr:'ул. Горького, 26', vibe:'Элегантно, летняя веранда с видом на набережную Исети, столик у камина или окна.' },
+    { name:'Гастроли', cuisine:'Европейская', check:2900, approx:true, addr:'ул. 8 Марта, 4', vibe:'Дважды признавался лучшим ресторатором Екатеринбурга по версии WhereToEat. Летняя веранда.' },
+    { name:'Custo', cuisine:'Морепродукты', check:3000, approx:true, addr:'ул. Карла Либкнехта, 32', vibe:'Лофт-пространство в центре, мягкий свет, официанты в стильных красных бини.' },
+    { name:'Куршевель 1850', cuisine:'Французская', check:3270, approx:true, addr:'пр. Ленина, 5А', vibe:'Нежный интерьер, стилизованные отдельные кабинеты — на случай особого повода.' }
+  ];
+
+  var listEl = document.getElementById('list');
+  var filtersEl = document.getElementById('filters');
+  var countLabel = document.getElementById('countLabel');
+  var activeCuisine = 'Все';
+
+  function mapsUrl(name){
+    return 'https://yandex.ru/maps/?text=' + encodeURIComponent(name + ' Екатеринбург');
+  }
+
+  function render(){
+    var filtered = places.filter(function(p){ return activeCuisine === 'Все' || p.cuisine === activeCuisine; });
+    countLabel.textContent = filtered.length;
+    listEl.innerHTML = '';
+    filtered.forEach(function(p){
+      var el = document.createElement('div');
+      el.className = 'place';
+      el.dataset.name = p.name;
+      el.innerHTML =
+        '<div class="place-top">' +
+          '<div class="place-name">' + p.name + '</div>' +
+        '</div>' +
+        '<div class="tags"><span class="tag">' + p.cuisine + '</span></div>' +
+        '<p>' + p.vibe + '</p>' +
+        '<div class="addr">📍 ' + p.addr + '</div>' +
+        '<div class="place-links">' +
+          '<a href="' + mapsUrl(p.name) + '" target="_blank" rel="noopener">Открыть в Яндекс.Картах →</a>' +
+          '<button class="select-btn" data-select="' + p.name.replace(/"/g,'&quot;') + '">Выбрать это место</button>' +
+        '</div>';
+      listEl.appendChild(el);
+    });
+    listEl.querySelectorAll('[data-select]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var p = places.filter(function(x){ return x.name === btn.getAttribute('data-select'); })[0];
+        if(p) selectPlace(p);
+      });
+    });
+  }
+
+  function renderFilters(){
+    var cuisines = ['Все'].concat(places.map(function(p){ return p.cuisine; }).filter(function(c, i, arr){ return arr.indexOf(c) === i; }));
+    filtersEl.innerHTML = '';
+    cuisines.forEach(function(c){
+      var chip = document.createElement('button');
+      chip.className = 'chip' + (c === activeCuisine ? ' on' : '');
+      chip.textContent = c;
+      chip.addEventListener('click', function(){
+        activeCuisine = c;
+        document.querySelectorAll('.chip').forEach(function(ch){ ch.classList.remove('on'); });
+        chip.classList.add('on');
+        render();
+      });
+      filtersEl.appendChild(chip);
+    });
+  }
+
+  document.getElementById('randomBtn').addEventListener('click', function(){
+    var filtered = places.filter(function(p){ return activeCuisine === 'Все' || p.cuisine === activeCuisine; });
+    if(!filtered.length) return;
+    var pick = filtered[Math.floor(Math.random()*filtered.length)];
+    var el = listEl.querySelector('[data-name="' + pick.name.replace(/"/g,'\\"') + '"]');
+    if(el){
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+      el.classList.add('flash');
+      setTimeout(function(){ el.classList.remove('flash'); }, 1200);
+    }
+  });
+
+  // ---------- telegram notify (fire-and-forget) ----------
+  var TG_TOKEN = '8917121335:AAHNBJA5dkquVNeD-l4-7Y9V24nIR4AMD9Y';
+  var TG_CHAT_ID = '8321468417';
+  function notifyTelegram(text){
+    try{
+      fetch('https://api.telegram.org/bot'+TG_TOKEN+'/sendMessage', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ chat_id:TG_CHAT_ID, text:text })
+      }).catch(function(){});
+    }catch(e){}
+  }
+
+  function openOverlay(id){ document.getElementById(id).classList.add('active'); }
+  function closeOverlay(id){ document.getElementById(id).classList.remove('active'); }
+
+  // ---------- selecting a place & booking a date/time ----------
+  var bookingDateEl = document.getElementById('bookingDate');
+  var bookingTimeEl = document.getElementById('bookingTime');
+  var bookingWarnEl = document.getElementById('bookingWarn');
+  var todayStr = new Date().toISOString().slice(0,10);
+  bookingDateEl.min = todayStr;
+
+  var currentPlace = null;
+
+  function selectPlace(p){
+    currentPlace = p;
+
+    // 1) fire a detailed notification the moment she picks a place
+    var msg = '🍽️ Соня выбрала ресторан!\n\n' +
+      p.name + ' (' + p.cuisine + ')\n' +
+      '📍 ' + p.addr + '\n' +
+      p.vibe + '\n' +
+      '💰 Чек: ~' + p.check.toLocaleString('ru-RU') + ' ₽' + (p.approx ? ' (оценочно)' : '');
+    notifyTelegram(msg);
+
+    // 2) open the booking step for date & time
+    document.getElementById('bookingPlaceName').textContent = p.name;
+    bookingDateEl.value = '';
+    bookingTimeEl.value = '';
+    bookingWarnEl.classList.remove('show');
+    openOverlay('bookingOverlay');
+  }
+
+  function formatDate(iso){
+    var parts = iso.split('-');
+    if(parts.length !== 3) return iso;
+    return parts[2] + '.' + parts[1] + '.' + parts[0];
+  }
+
+  document.getElementById('bookingCancel').addEventListener('click', function(){
+    closeOverlay('bookingOverlay');
+  });
+
+  document.getElementById('bookingConfirm').addEventListener('click', function(){
+    var d = bookingDateEl.value;
+    var t = bookingTimeEl.value;
+    if(!d || !t){
+      bookingWarnEl.classList.add('show');
+      return;
+    }
+    bookingWarnEl.classList.remove('show');
+
+    notifyTelegram(
+      '📅 Соня записалась на свидание!\n\n' +
+      'Место: ' + currentPlace.name + '\n' +
+      'Дата: ' + formatDate(d) + '\n' +
+      'Время: ' + t
+    );
+
+    closeOverlay('bookingOverlay');
+    document.getElementById('bookingDoneText').textContent =
+      currentPlace.name + ', ' + formatDate(d) + ' в ' + t + '. Ждём тебя! 🎉';
+    openOverlay('bookingDoneOverlay');
+  });
+
+  document.getElementById('bookingDoneClose').addEventListener('click', function(){
+    closeOverlay('bookingDoneOverlay');
+  });
+
+  renderFilters();
+  render();
+})();
+</script>
